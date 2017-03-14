@@ -1,0 +1,3 @@
+Question 1b: How many passes does your program need in terms of M and N? 
+
+Answer: M*(N-1)

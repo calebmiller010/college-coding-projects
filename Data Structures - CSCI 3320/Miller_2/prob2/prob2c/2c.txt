@@ -1,0 +1,5 @@
+I think that the 2nd program runs the fastest, because with larger numbers, you don't have to do as many passes as the first program.
+It sorts the numbers 2 numbers at a time, so it does half the number of passes that the 1st program does. Both programs have a linear
+time complexity of O(N) (N is input), but if you're calculating the actual run-time of the program, for larger inputs, the problem 2b
+program would run faster, because it does half the amount of passes.
+

@@ -1,0 +1,144 @@
+State variables: the state consists of the position of the robot, as well as thedirection the robot is heading in at time-stamp t.
+
+Evidence variable: the evidence variable is the (noisy) position of the robot given by the robot's sensor at time-stamp t.
+
+The evidence variable is dependent on the state variable because the location reported by the robot will be based on the actual state of the robot.
+
+Transition Model: P( S_t = (x,y+1,D) | S_t-1 = (x,y,D) ) = .8
+                  P( S_t = (x,y-1,U) | S_t-1 = (x,y,U) ) = .8
+                  P( S_t = (x-1,y,L) | S_t-1 = (x,y,L) ) = .8
+                  P( S_t = (x+1,y,R) | S_t-1 = (x,y,R) ) = .8
+
+
+Sensor Model: -- *a* represents any direction
+                  P( E_t = (x,y) | S_t = (x,y,*a*) ) = .1
+
+                  P( E_t = (x+1,y+1) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x,y+1) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x-1,y+1) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x+1,y) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x-1,y) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x+1,y-1) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x,y-1) | S_t = (x,y,*a*) ) = .05
+                  P( E_t = (x-1,y-1) | S_t = (x,y,*a*) ) = .05
+
+                  P( E_t = (x-2,y-2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x-2,y-1) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x-2,y) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x-2,y+1) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x-2,y+2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x-1,y-2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x-1,y+2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x,y-2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x,y+2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+1,y-2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+1,y+2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+2,y-2) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+2,y-1) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+2,y) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+2,y+1) | S_t = (x,y,*a*) ) = .025
+                  P( E_t = (x+2,y+2) | S_t = (x,y,*a*) ) = .025
+
+                  P( E_t = "No Reading" | S_t = (x,y,*a*) ) = .1
+
+Transition Matrix:
+----------------------------------------
+Given that c is (i,j,R):
+ [0 1 2 ... i-1 i i+1 ... M-1 M]
+0]
+1]
+2]
+.]
+.]
+.]
+j-1]            .2
+j]           .2  0 .8
+j+1]            .2
+.]
+.]
+.]
+N-1]
+N]
+
+
+
+Given that c is (i,j,L):
+ [0 1 2 ... i-1 i i+1 ... M-1 M]
+0]
+1]
+2]
+.]
+.]
+.]
+j-1]            .2
+j]           .8  0 .2
+j+1]            .2
+.]
+.]
+.]
+N-1]
+N]
+
+
+Given that c is (i,j,U):
+ [0 1 2 ... i-1 i i+1 ... M-1 M]
+0]
+1]
+2]
+.]
+.]
+.]
+j-1]            .8
+j]           .2  0 .2
+j+1]            .2
+.]
+.]
+.]
+N-1]
+N]
+
+
+Given that c is (i,j,D):
+ [0 1 2 ... i-1 i i+1 ... M-1 M]
+0]
+1]
+2]
+.]
+.]
+.]
+j-1]            .2
+j]           .2  0 .2
+j+1]            .8
+.]
+.]
+.]
+N-1]
+N]
+
+***And all other values in the matrix are 0
+
+
+Sensor Matrix:
+-------------------------------------------------------
+Given that the current state is (i,j,*a*), these are the probabilities for
+the state that the sensor returns:
+ [0 1 2 ...   i-2 i-1  i  i+1 i+2 ... M-1 M]
+0]
+1]
+2]
+.]
+.]
+.]
+j-2]         .025.025.025.025.025
+j-1]         .025 .05 .05 .05.025   
+j]           .025 .05 .1  .05.025
+j+1]         .025 .05 .05 .05.025
+j+2]         .025.025.025.025.025
+.]
+.]
+.]
+M-1]
+M]
+
+........All other matrix values are 0. There is also a .1 probability of
+the sensor returning "No Reading"
